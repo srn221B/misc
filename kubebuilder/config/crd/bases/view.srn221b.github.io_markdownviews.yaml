@@ -14,7 +14,14 @@ spec:
     singular: markdownview
   scope: Namespaced
   versions:
-  - name: v1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.replicas
+      name: Replicas
+      type: integer
+    - jsonPath: .status.conditions[?(@.type=="Available")].status
+      name: Available
+      type: string
+    name: v1
     schema:
       openAPIV3Schema:
         description: MarkdownView is the Schema for the markdownviews API.
@@ -39,10 +46,19 @@ spec:
           spec:
             description: MarkdownViewSpec defines the desired state of MarkdownView.
             properties:
-              foo:
-                description: Foo is an example field of MarkdownView. Edit markdownview_types.go
-                  to remove/update
+              markdowns:
+                additionalProperties:
+                  type: string
+                minProperties: 1
+                type: object
+              replicas:
+                default: 1
+                format: int32
+                type: integer
+              viewerimage:
                 type: string
+            required:
+            - markdowns
             type: object
           status:
             description: MarkdownViewStatus defines the observed state of MarkdownView.

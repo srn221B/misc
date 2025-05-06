@@ -28,8 +28,16 @@ type MarkdownViewSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of MarkdownView. Edit markdownview_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	//+kubebuilder:validation:Required
+	//+kubebuilder:validation:MinProperties=1
+	Markdowns map[string]string `json:"markdowns,omitempty"`
+
+	//+kubebuilder:default=1
+	//+optional
+	Replicas int32 `json:"replicas,omitempty"`
+
+	//+optional
+	ViewerImage string `json:"viewerimage,omitempty"`
 }
 
 // MarkdownViewStatus defines the observed state of MarkdownView.
@@ -40,6 +48,8 @@ type MarkdownViewStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas"
+// +kubebuilder:printcolumn:name="Available",type="string",JSONPath=".status.conditions[?(@.type==\"Available\")].status"
 
 // MarkdownView is the Schema for the markdownviews API.
 type MarkdownView struct {
