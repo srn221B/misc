@@ -1,0 +1,9 @@
+apiVersion: view.srn221b.github.io/v1
+kind: MarkdownView
+metadata:
+  labels:
+    app.kubernetes.io/name: kubebuilder
+    app.kubernetes.io/managed-by: kustomize
+  name: markdownview-sample
+spec:
+  # TODO(user): Add fields here
